@@ -1,6 +1,6 @@
 'use strict';
 
-const emitter = require('../events.js');
+const emitter = require('../index.js');
 
 const onInTransit = (order) => {
   // wait 1 second

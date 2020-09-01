@@ -1,6 +1,6 @@
 'use strict';
 
-const emitter = require('../events.js');
+const emitter = require('../index.js');
 require('dotenv').config();
 const store = process.env.STORE;
 
