@@ -22,7 +22,7 @@ const onPickup  = (order) => {
 
   setInterval(() => {
     console.log(`ORDER: ${order.orderID} is ready for pickup.`);
-    emitter.emit('', order);
+    emitter.emit('pickup', order);
   }, 5000);
 
 };

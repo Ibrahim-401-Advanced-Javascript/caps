@@ -16,11 +16,10 @@ const onInTransit = (order) => {
   // --emit a 'delivered' event with the same payload
   setTimeout(() => {
     console.log('Delivered! Thank you.');
-    emitter.emit('delivered', order);
+    emitter.emit('delivered', order.orderID);
   }, 3000);
 
 };
 
 emitter.on('in-transit', onInTransit);
-
 

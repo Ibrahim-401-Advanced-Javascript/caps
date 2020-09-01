@@ -1,7 +1,7 @@
 'use strict';
 
 jest.useFakeTimers();
-const emitter = require('../caps.js');
+const emitter = require('../index.js');
 require('../caps.js');
 
 const delivery = {

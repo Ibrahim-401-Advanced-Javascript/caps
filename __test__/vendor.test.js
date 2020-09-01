@@ -5,11 +5,7 @@ const emitter = require('../index.js');
 
 jest.useFakeTimers();
 
-it('should receive delivery politely', () => {
-  console.log = jest.fn();
-  emitter.emit('delivered', { orderID : '1002' });
-  expect(console.log).toHaveBeenCalledWith('VENDOR: Thank you for delivering 1002');
-});
+
 
 it('should emit order', () => {
 
@@ -27,5 +23,11 @@ it('should emit order', () => {
 
   expect(callback).toHaveBeenCalledTimes(1);
 
+});
+
+it('should receive delivery politely', () => {
+  console.log = jest.fn();
+  emitter.emit('delivered', { orderID : '1002' });
+  expect(console.log).toHaveBeenCalledWith('Delivered! Thank you.');
 });
 
