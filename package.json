@@ -1,0 +1,23 @@
+{
+  "name": "caps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "events.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ibrahim-401-Advanced-Javascript/caps.git"
+  },
+  "author": "cas ibrahim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ibrahim-401-Advanced-Javascript/caps/issues"
+  },
+  "homepage": "https://github.com/Ibrahim-401-Advanced-Javascript/caps#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "jest": "^26.4.2"
+  }
+}
