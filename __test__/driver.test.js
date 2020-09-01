@@ -1,13 +1,13 @@
 'use strict';
 
-const driver = require('../js/vendor.js');
+const driver = require('../js/driver.js');
 const emitter = require('../index.js');
 
 jest.useFakeTimers();
 
 beforeEach(jest.clearAllTimers);
 
-const delivery = {
+const order = {
   store: 'CafeTurko',
   orderID: '1002',
   customer: 'Mel B',
@@ -20,19 +20,19 @@ describe('handle pick up event', () => {
 
     console.log = jest.fn();
 
-    const inTransitHandler = jest.fn();
+    const onInTransit = jest.fn();
 
-    emitter.on('in-transit', inTransitHandler);
+    emitter.on('in-transit', onInTransit);
 
-    emitter.emit('pickup', delivery);
+    emitter.emit('pickup', order);
 
-    expect(inTransitHandler).toHaveBeenCalledTimes(0);
+    expect(onInTransit).toHaveBeenCalledTimes(0);
 
     jest.advanceTimersByTime(1000);
 
-    expect(inTransitHandler).toHaveBeenCalledTimes(1);
+    expect(onInTransit).toHaveBeenCalledTimes(1);
 
-    expect(console.log).toHaveBeenCalledWith(`DRIVER: picked up ${delivery.orderID}`);
+    expect(console.log).toHaveBeenCalledWith(`DRIVER: picked up ${order.orderID}`);
 
   });
 
@@ -44,7 +44,7 @@ describe('handle pick up event', () => {
 
     emitter.on('delivered', deliveredHandler);
 
-    emitter.emit('pickup', delivery);
+    emitter.emit('pickup', order);
 
     expect(deliveredHandler).toHaveBeenCalledTimes(0);
 
@@ -53,7 +53,9 @@ describe('handle pick up event', () => {
     expect(deliveredHandler).toHaveBeenCalledTimes(1);
 
     // WARNING: notice the "Last" in method name
-    expect(console.log).toHaveBeenLastCalledWith(`DRIVER: delivered ${delivery.orderID}`);
+    expect(console.log).toHaveBeenLastCalledWith(`DRIVER: delivered ${order.orderID}`);
 
   });
+
+
 });

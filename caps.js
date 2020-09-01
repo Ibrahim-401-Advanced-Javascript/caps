@@ -1,6 +1,6 @@
 'use strict';
 
-const events = require('./index.js');
+const emitter = require('./index.js');
 
 // const onPickup = (payload) => {
 //   let time = new Date();
@@ -21,10 +21,11 @@ const events = require('./index.js');
 const handleEvents = (eventName) => {
   return payload => {
     let time = new Date();
-    console.log('[EVENT]', { event:eventName, time, payload });
+    console.log('EVENT', { event:eventName, time, payload });
   };
 };
 
-events.on('pickup', handleEvents('pickup'));
-events.on('in-transit', handleEvents('in-transit'));
-events.on('delivered', handleEvents('delivered'));
+emitter.on('pickup', handleEvents('pickup'));
+emitter.on('in-transit', handleEvents('in-transit'));
+emitter.on('delivered', handleEvents('delivered'));
+
