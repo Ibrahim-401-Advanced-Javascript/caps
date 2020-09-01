@@ -1,8 +1,8 @@
 'use strict';
 
 jest.useFakeTimers();
-const emitter = require('../js/caps.js');
-require('../js/caps.js');
+const emitter = require('../caps.js');
+require('../caps.js');
 
 const delivery = {
   store: 'MamaSambusa',

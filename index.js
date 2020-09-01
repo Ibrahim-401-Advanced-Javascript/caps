@@ -2,8 +2,7 @@
 
 // EE = Event Emitter
 const EE = require('events');
-require('./js/logger.js');
-require('./js/caps.js');
+require('./caps.js');
 
 // global event pool, shared by all modules
 const events = new EE();
