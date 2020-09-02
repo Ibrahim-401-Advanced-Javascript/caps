@@ -22,7 +22,7 @@ server.on('connection', (socket) => {
   console.log('conection', socketPool);
 
   // when events come in:
-  // socket.on('data', (buffer) => dispatchEvent(buffer));
+  socket.on('data', (buffer) => dispatchEvent(buffer));
 
   // socket.on('error', (e) => { console.log('SOCKET ERROR', e); });
   // socket.on('end', (e) => { delete socketPool[id]; });
@@ -32,9 +32,16 @@ server.on('connection', (socket) => {
 //   console.error('SERVER ERROR', e.message);
 // });
 
-// const dispatchEvent = (buffer) => {
-//   let message = JSON.parse(buffer.toString().trim());
-//   broadcast(message);
-// };
+const dispatchEvent = (buffer) => {
+  let message = JSON.parse(buffer.toString().trim());
+  broadcast(message);
+};
 
-
+function broadcast(message) {
+  // Message is an object with 2 props: event and payload
+  // We can use those to handle every event type and payload differently, if we choose
+  let payload = JSON.stringify(message);
+  for (let socket in socketPool) {
+    socketPool[socket].write(payload)
+  }
+}
