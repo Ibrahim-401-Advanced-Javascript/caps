@@ -1,0 +1,25 @@
+{
+  "name": "caps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ibrahim-401-Advanced-Javascript/caps.git"
+  },
+  "author": "cas ibrahim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ibrahim-401-Advanced-Javascript/caps/issues"
+  },
+  "homepage": "https://github.com/Ibrahim-401-Advanced-Javascript/caps#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "inquire": "^0.4.8",
+    "nodemon": "^2.0.4"
+  }
+}
