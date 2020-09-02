@@ -25,6 +25,7 @@ const client = new net.Socket();
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 3001;
+
 client.connect(port, host, () => {
   console.log('successfully connected to', host, ':', port);
 });
@@ -58,7 +59,7 @@ async function getInput() {
 
 async function getName() {
   console.clear();
-  let input = await inquirer.prompt([{ 'name': 'name', 'message': 'What is  your name?' }]);
+  let input = await inquirer.prompt([{ 'name': 'name', 'message': 'DRIVER' }]);
   name = input.name;
 }
 
