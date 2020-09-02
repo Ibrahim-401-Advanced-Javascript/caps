@@ -13,6 +13,10 @@
 // emitter.on('in-transit', handleEvents('in-transit'));
 // emitter.on('delivered', handleEvents('delivered'));
 
+// ****************************************
+// TCP STUFF ******************************
+// ****************************************
+
 const inquirer = require('inquirer');
 const net = require('net');
 
@@ -60,3 +64,7 @@ async function getName() {
 
 getName();
 getInput();
+
+// ****************************************
+// SOCKET.IO ******************************
+// ****************************************
