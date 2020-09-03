@@ -1,4 +1,23 @@
-// 'use strict';
+'use strict';
+
+// ****************************************
+// SOCKET.IO ******************************
+// ****************************************
+
+const ioClient = require('socket.io-client');
+
+const vendorChannel = ioClient.connect('http://localhost:3001/vendor');
+
+vendorChannel.emit('join', 'caps');
+
+vendorChannel.on('pickup', (payload) => {
+  console.log('LOGGING PICKUP FROM VENDOR.JS');
+});
+
+
+// ****************************************
+// EMITTER EVENTS *************************
+// ****************************************
 
 // const emitter = require('../index.js');
 // require('dotenv').config();
@@ -21,61 +40,3 @@
 // };
 
 // emitter.on('pickup', onPickup);
-
-// ****************************************
-// TCP STUFF ******************************
-// ****************************************
-
-const inquirer = require('inquirer');
-const net = require('net');
-
-const client = new net.Socket();
-
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3001;
-
-client.connect(port, host, () => {
-  console.log('successfully connected to', host, ':', port);
-});
-
-let name = '';
-let messages = [];
-
-client.on('data', function(data) {
-  let event = JSON.parse(data);
-  if (event.event === 'message') {
-    messages.push(event.payload);
-
-    console.clear();
-    messages.forEach(message => console.log(message));
-    console.log('');
-  }
-});
-
-function sendMessage(text) {
-  console.log('sending', text);
-  let message = `[${name}]: ${text}`;
-  let event = JSON.stringify({ event: 'message', payload: message });
-  client.write(event);
-};
-
-async function getInput() {
-  let input = await inquirer.prompt([{ 'name': 'text', 'message': ' ' }]);
-  sendMessage(input.text);
-  getInput();
-}
-
-async function getName() {
-  console.clear();
-  let input = await inquirer.prompt([{ 'name': 'name', 'message': 'VENDOR' }]);
-  name = input.name;
-}
-
-getName();
-getInput();
-
-// ****************************************
-// SOCKET.IO ******************************
-// ****************************************
-
-

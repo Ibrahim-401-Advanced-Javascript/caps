@@ -1,4 +1,26 @@
-// 'use strict';
+'use strict';
+
+// ****************************************
+// SOCKET.IO ******************************
+// ****************************************
+
+const ioClient = require('socket.io-client');
+const socket = ioClient.connect('http://localhost:3001');
+
+const driver = ioClient.connect('http://localhost:3001/driver');
+
+const vendor = ioClient.connect('http://localhost:3001/vendor');
+
+socket.emit('event', { order: 'eventName, time, orderID' } );
+
+vendor.emit('pickup', 'PICKUP EVENT GOES HERE');
+driver.emit('in-transit', 'IN-TRANSIT EVENT GOES HERE');
+driver.emit('delivered', 'DELIVERED EVENT GOES HERE');
+
+
+// ****************************************
+// EMITTER EVENTS *************************
+// ****************************************
 
 // const emitter = require('../index.js');
 
@@ -12,59 +34,3 @@
 // emitter.on('pickup', handleEvents('pickup'));
 // emitter.on('in-transit', handleEvents('in-transit'));
 // emitter.on('delivered', handleEvents('delivered'));
-
-// ****************************************
-// TCP STUFF ******************************
-// ****************************************
-
-const inquirer = require('inquirer');
-const net = require('net');
-
-const client = new net.Socket();
-
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3001;
-
-client.connect(port, host, () => {
-  console.log('successfully connected to', host, ':', port);
-});
-
-let name = '';
-let messages = [];
-
-client.on('data', function(data) {
-  let event = JSON.parse(data);
-  if (event.event === 'message') {
-    messages.push(event.payload);
-
-    console.clear();
-    messages.forEach(message => console.log(message));
-    console.log('');
-  }
-});
-
-function sendMessage(text) {
-  console.log('sending', text);
-  let message = `[${name}]: ${text}`;
-  let event = JSON.stringify({ event: 'message', payload: message });
-  client.write(event);
-};
-
-async function getInput() {
-  let input = await inquirer.prompt([{ 'name': 'text', 'message': ' ' }]);
-  sendMessage(input.text);
-  getInput();
-}
-
-async function getName() {
-  console.clear();
-  let input = await inquirer.prompt([{ 'name': 'name', 'message': 'EVENT LOG' }]);
-  name = input.name;
-}
-
-getName();
-getInput();
-
-// ****************************************
-// SOCKET.IO ******************************
-// ****************************************
