@@ -20,6 +20,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "inquire": "^0.4.8",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "socket.io": "^2.3.0"
   }
 }
