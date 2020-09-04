@@ -1,42 +1,14 @@
 'use strict';
 
-// ****************************************
-// SOCKET.IO ******************************
-// ****************************************
+const client = require('socket.io-client');
+const socket = client.connect('http://localhost:3000');
 
-const ioClient = require('socket.io-client');
 
-const driverChannel = ioClient.connect('http://localhost:3001/driver');
+// instruct server to transmit all the messages
+// missed while server is offline:
+socket.emit('drivers-missed-logs');
 
-driverChannel.emit('join', 'caps');
-
-driverChannel.on('in-transit', (payload) => {
-  console.log('LOGGING IN-TRANSIT FROM DRIVER.JS', payload);
+socket.on('in-transit', (payload1) => {
+  console.log(`Driver, thank you for picking up Order ${payload1.orderNum}.`);
+  socket.emit('picked-up', payload1);
 });
-
-driverChannel.on('delivered', (payload) => {
-  console.log('LOGGING DELIVERED FROM DRIVER.JS', payload);
-});
-
-
-// ****************************************
-// EMITTER EVENTS *************************
-// ****************************************
-
-// const emitter = require('../index.js');
-
-// const onInTransit = (order) => {
-
-//   setTimeout(() => {
-//     console.log(`DRIVER: picked up ${order.orderID}`);
-//     emitter.emit('in-transit', order);
-//   }, 1000);
-
-//   setTimeout(() => {
-//     console.log('Delivered! Thank you.');
-//     emitter.emit('delivered', order.orderID);
-//   }, 3000);
-
-// };
-
-// emitter.on('in-transit', onInTransit);

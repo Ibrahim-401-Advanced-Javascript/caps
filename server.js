@@ -1,93 +1,83 @@
 'use strict';
 
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 
-// ****************************************
-// SOCKET.IO ******************************
-// ****************************************
+const io = require('socket.io')(3000);
 
-const io = require('socket.io')(process.env.PORT || 3001);
+// if messages sent are not able to be received,
+// i.e. server is offline, queue them to enable
+// transmission upon reconnection:
+const queue = {
+  order: {  }
+}
 
 io.on('connection', (socket) => {
-  console.log('CONNECTED TO', socket.id);
+  console.log('connection made on socket', socket.id);
 
-  socket.on('pickup', (payload) => {
-    console.log('received pickup message', payload);
-    io.emit('pickup', payload);
+
+  socket.on('order-ready', (orderNumber) => {
+    console.log('');
+    console.log(`Order ${orderNumber} is ready for pickup`);
+
+    const id = uuidv4();
+    queue.order[id] = orderNumber;
+    // console.log(queue.order);
+    const payload = { id, orderNumber };
+
+    socket.broadcast.emit('pickup', payload);
+
   });
 
-  socket.on('in-transit', (payload) => {
-    console.log('received in-transit message', payload);
-    io.emit('in-transit', payload);
+  socket.on('order-in-transit', (orderNum) => {
+
+    const id = uuidv4();
+    queue.order[id] = orderNum;
+    // console.log(queue.order);
+    const payload = { id, orderNum };
+
+    socket.broadcast.emit('in-transit', payload);
   });
 
-  socket.on('delivered', (payload) => {
-    console.log('received delivered message', payload);
-    io.emit('delivered', payload);
+  socket.on('order-delivered', (orderNum) => {
+    const id = uuidv4();
+    queue.order[id] = orderNum;
+    // console.log(queue.order);
+    const payload = { id, orderNum };
+
+    socket.broadcast.emit('delivered', payload);
+  });
+
+
+  socket.on('drivers-missed-logs', () => {
+    console.log('listening for driver\'s missed logs on server');
+    // re-emit all queued logs
+    for (let id in queue.order) {
+      const missed = queue.order.id;
+      const payload = { id, missed };
+      socket.broadcast.emit('in-transit', payload);
+    }
+  });
+
+  socket.on('picked-up', (payload) => {
+    // inspect payload for an id
+    // use that as a key to delete from queue
+    console.log('');
+    console.log(`Driver Picked Up Order ${payload.orderNum} and it is in-transit`);
+    let id = payload.id;
+    delete queue.order[id];
+    // console.log(queue.order);
+  });
+
+  socket.on('complete', (payload2) => {
+    console.log('');
+    console.log(`Delivery has been completed for Order ${payload2.orderNum}. Thank you!`);
+    let id = payload2.id;
+    delete queue.order[id];
+    // console.log(queue.order);
   });
 
 });
 
-// CAPS NAMESPACE
-// couple with caps.js client
-const caps = io.of('/caps');
-caps.on('connection', (socket) => {
-
-  console.log('CAPS NAMESPACE ON', socket.id);
-
-  socket.on('pickup', (payload) => {
-    caps.emit('pickup', payload);
-  });
-
-  socket.on('in-transit', (payload) => {
-    caps.emit('in-transit', payload);
-  });
-
-  socket.on('delivered', (payload) => {
-    caps.emit('delivered', payload);
-  });
-
-});
-
-// COUPLE WITH DRIVER
-
-const driver = io.of('/driver');
-
-driver.on('connection', (socket) => {
-  console.log('DRIVER CHANNEL', socket.id);
-
-  socket.on('join', room => {
-    console.log('ABOUT TO JOIN', room);
-    socket.join(room);
-  });
-
-  socket.on('in-transit', (payload) => {
-    driver.to('caps').emit('in-transit', payload);
-  });
-
-  socket.on('delivered', (payload) => {
-    driver.to('caps').emit('delivered', payload);
-  });
 
 
-});
-
-
-// COUPLE WITH VENDOR
-
-const vendor = io.of('/vendor');
-
-vendor.on('connection', (socket) => {
-  console.log('VENDOR CHANNEL', socket.id);
-
-  socket.on('join', room => {
-    console.log('ABOUT TO JOIN', room);
-    socket.join(room);
-  });
-
-  socket.on('pickup', (payload) => {
-    vendor.to('caps').emit('pickup', payload);
-  });
-
-
-});

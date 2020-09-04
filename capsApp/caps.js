@@ -1,36 +1,20 @@
 'use strict';
 
-// ****************************************
-// SOCKET.IO ******************************
-// ****************************************
+const client = require('socket.io-client');
+const socket = client.connect('http://localhost:3000');
 
-const ioClient = require('socket.io-client');
-const socket = ioClient.connect('http://localhost:3001');
+let w = 1;
+let x = 1;
+let y = 1;
 
-const driver = ioClient.connect('http://localhost:3001/driver');
+setInterval(() => {
+  socket.emit('order-ready', `${w++}`);
+}, 1000);
 
-const vendor = ioClient.connect('http://localhost:3001/vendor');
+setInterval(() => {
+  socket.emit('order-in-transit', `${x++}`);
+}, 4000);
 
-socket.emit('event', { order: 'eventName, time, orderID' } );
-
-vendor.emit('pickup', 'PICKUP EVENT GOES HERE');
-driver.emit('in-transit', 'IN-TRANSIT EVENT GOES HERE');
-driver.emit('delivered', 'DELIVERED EVENT GOES HERE');
-
-
-// ****************************************
-// EMITTER EVENTS *************************
-// ****************************************
-
-// const emitter = require('../index.js');
-
-// const handleEvents = (eventName) => {
-//   return payload => {
-//     let time = new Date();
-//     console.log('EVENT', { event:eventName, time, payload });
-//   };
-// };
-
-// emitter.on('pickup', handleEvents('pickup'));
-// emitter.on('in-transit', handleEvents('in-transit'));
-// emitter.on('delivered', handleEvents('delivered'));
+setInterval(() => {
+  socket.emit('order-delivered', `${y++}`);
+}, 7000);
