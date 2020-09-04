@@ -11,11 +11,11 @@ const driverChannel = ioClient.connect('http://localhost:3001/driver');
 driverChannel.emit('join', 'caps');
 
 driverChannel.on('in-transit', (payload) => {
-  console.log('LOGGING IN-TRANSIT FROM DRIVER.JS');
+  console.log('LOGGING IN-TRANSIT FROM DRIVER.JS', payload);
 });
 
 driverChannel.on('delivered', (payload) => {
-  console.log('LOGGING DELIVERED FROM DRIVER.JS');
+  console.log('LOGGING DELIVERED FROM DRIVER.JS', payload);
 });
 
 
