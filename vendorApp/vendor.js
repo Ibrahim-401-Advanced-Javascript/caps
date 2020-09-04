@@ -3,7 +3,7 @@
 const client = require('socket.io-client');
 const socket = client.connect('http://localhost:3000');
 
-socket.emit('vendors-missed-pickup-logs');
+// socket.emit('vendors-missed-pickup-logs');
 
 socket.on('pickup', (purchase) => {
   console.log('');
@@ -11,7 +11,7 @@ socket.on('pickup', (purchase) => {
 });
 
 
-socket.emit('vendors-missed-delivered-logs');
+// socket.emit('vendors-missed-delivered-logs');
 
 socket.on('delivered', (payload2) => {
   console.log('');
