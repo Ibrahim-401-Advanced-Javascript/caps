@@ -11,7 +11,7 @@ const vendorChannel = ioClient.connect('http://localhost:3001/vendor');
 vendorChannel.emit('join', 'caps');
 
 vendorChannel.on('pickup', (payload) => {
-  console.log('LOGGING PICKUP FROM VENDOR.JS');
+  console.log('LOGGING PICKUP FROM VENDOR.JS', payload);
 });
 
 
