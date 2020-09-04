@@ -9,8 +9,8 @@ const io = require('socket.io')(3000);
 // i.e. server is offline, queue them to enable
 // transmission upon reconnection:
 const queue = {
-  order: {  }
-}
+  order: {},
+};
 
 io.on('connection', (socket) => {
   console.log('connection made on socket', socket.id);
@@ -48,6 +48,23 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('delivered', payload);
   });
 
+  socket.on('vendors-missed-pickup-logs', () => {
+    console.log('listening for missed vendor logs');
+    for (let id in queue.order) {
+      const missed = queue.order.id;
+      const payload = { id, missed };
+      socket.broadcast.emit('pickup', payload);
+    }
+  });
+
+  socket.on('vendors-missed-delivered-logs', () => {
+    console.log('listening for missed vendor logs');
+    for (let id in queue.order) {
+      const missed = queue.order.id;
+      const payload = { id, missed };
+      socket.broadcast.emit('delivered', payload);
+    }
+  });
 
   socket.on('drivers-missed-logs', () => {
     console.log('listening for driver\'s missed logs on server');
