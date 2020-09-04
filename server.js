@@ -48,33 +48,33 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('delivered', payload);
   });
 
-  socket.on('vendors-missed-pickup-logs', () => {
-    console.log('listening for missed vendor logs');
-    for (let id in queue.order) {
-      const missed = queue.order.id;
-      const payload = { id, missed };
-      socket.broadcast.emit('pickup', payload);
-    }
-  });
+  // socket.on('vendors-missed-pickup-logs', () => {
+  // console.log('listening for missed vendor logs');
+  // for (let id in queue.order) {
+  //   const missed = queue.order.id;
+  //   const payload = { id, missed };
+  //   socket.broadcast.emit('pickup', payload);
+  // }
+  // });
 
-  socket.on('vendors-missed-delivered-logs', () => {
-    console.log('listening for missed vendor logs');
-    for (let id in queue.order) {
-      const missed = queue.order.id;
-      const payload = { id, missed };
-      socket.broadcast.emit('delivered', payload);
-    }
-  });
+  // socket.on('vendors-missed-delivered-logs', () => {
+  // console.log('listening for missed vendor logs');
+  // for (let id in queue.order) {
+  //   const missed = queue.order.id;
+  //   const payload = { id, missed };
+  //   socket.broadcast.emit('delivered', payload);
+  // }
+  // });
 
-  socket.on('drivers-missed-logs', () => {
-    console.log('listening for driver\'s missed logs on server');
-    // re-emit all queued logs
-    for (let id in queue.order) {
-      const missed = queue.order.id;
-      const payload = { id, missed };
-      socket.broadcast.emit('in-transit', payload);
-    }
-  });
+  // socket.on('drivers-missed-logs', () => {
+  //   console.log('listening for driver\'s missed logs on server');
+  //   // re-emit all queued logs
+  //   for (let id in queue.order) {
+  //     const missed = queue.order.id;
+  //     const payload = { id, missed };
+  //     socket.broadcast.emit('in-transit', payload);
+  //   }
+  // });
 
   socket.on('picked-up', (payload) => {
     // inspect payload for an id

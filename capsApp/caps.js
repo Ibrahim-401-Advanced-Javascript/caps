@@ -3,9 +3,9 @@
 const client = require('socket.io-client');
 const socket = client.connect('http://localhost:3000');
 
-let w = 1;
-let x = 1;
-let y = 1;
+let w = 0;
+let x = 0;
+let y = 0;
 
 setInterval(() => {
   socket.emit('order-ready', `${w++}`);
